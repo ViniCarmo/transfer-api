@@ -1,9 +1,6 @@
 package dev.vinicius.transfer_api.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,15 +16,16 @@ import java.math.BigDecimal;
 @Table(name = "transfers")
 public class Transfer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "value")
     private BigDecimal value;
 
     @Column(name = "sourceAccount")
-    private Integer sourceAccountId;
+    private String sourceAccountName;
 
     @Column(name = "destinationAccount")
-    private Integer destinationAccountId;
+    private String destinationAccountName;
 
 }
