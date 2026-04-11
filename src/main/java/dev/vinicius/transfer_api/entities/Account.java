@@ -24,5 +24,5 @@ public class Account {
     private String titularName;
 
     @Column(name = "balance")
-    public BigDecimal balance;
+    private BigDecimal balance;
 }

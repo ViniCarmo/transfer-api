@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,9 +25,13 @@ public class Transfer {
     private BigDecimal value;
 
     @Column(name = "sourceAccount")
-    private String sourceAccountName;
+    private Integer sourceAccountId;
 
     @Column(name = "destinationAccount")
-    private String destinationAccountName;
+    private Integer destinationAccountId;
+
+    @Column(name = "timestamp")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
 
 }

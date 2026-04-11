@@ -6,6 +6,8 @@ import dev.vinicius.transfer_api.entities.Account;
 import dev.vinicius.transfer_api.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class AccountService {
 
@@ -16,11 +18,10 @@ public class AccountService {
     }
 
     public void createAccount(AccountRequestDto accountRequestDto) {
-        var account = new Account();
+        Account account = new Account();
         account.setTitularName(accountRequestDto.titularName());
-        account.setBalance(account.getBalance().add(account.getBalance()));
-
-        var savedAccount = accountRepository.save(account);
+        account.setBalance(BigDecimal.ZERO);
+        accountRepository.save(account);
     }
 
     public AccountResponseDto getAccountById(Integer id){
