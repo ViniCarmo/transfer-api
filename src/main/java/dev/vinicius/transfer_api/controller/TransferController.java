@@ -24,7 +24,7 @@ public class TransferController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransferResponseDto> getTransferById(@Valid @PathVariable Integer id){
+    public ResponseEntity<TransferResponseDto> getTransferById(@PathVariable Integer id){
         return ResponseEntity.ok(transferService.getTransferById(id));
     }
 }

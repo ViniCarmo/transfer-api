@@ -3,6 +3,9 @@ package dev.vinicius.transfer_api.service;
 import dev.vinicius.transfer_api.dto.TransferRequestDto;
 import dev.vinicius.transfer_api.dto.TransferResponseDto;
 import dev.vinicius.transfer_api.entities.Transfer;
+import dev.vinicius.transfer_api.exception.AccountNotFoundException;
+import dev.vinicius.transfer_api.exception.InsufficientBalanceException;
+import dev.vinicius.transfer_api.exception.TransferNotFoundException;
 import dev.vinicius.transfer_api.repository.AccountRepository;
 import dev.vinicius.transfer_api.repository.TransferRepository;
 import org.springframework.stereotype.Service;
@@ -25,9 +28,9 @@ public class TransferService {
 
     public void verifyBalance(Integer id, BigDecimal value) {
         var account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException(id));
         if(account.getBalance().compareTo(value) < 0){
-                throw new RuntimeException("Insufficient balance");
+                throw new InsufficientBalanceException(id);
         }
     }
 
@@ -35,9 +38,9 @@ public class TransferService {
     @Transactional
     public void createTransfer(TransferRequestDto transferRequestDto) {
         var source = accountRepository.findById(transferRequestDto.sourceAccountTitularId())
-                .orElseThrow(() -> new RuntimeException("Source account not found"));
+                .orElseThrow(() -> new AccountNotFoundException(transferRequestDto.sourceAccountTitularId()));
         var destination = accountRepository.findById(transferRequestDto.destinationAccountTitularId())
-                .orElseThrow(() -> new RuntimeException("Destination account not found"));
+                .orElseThrow(() -> new AccountNotFoundException(transferRequestDto.destinationAccountTitularId()));
 
         verifyBalance(source.getId(), transferRequestDto.value());
 
@@ -60,7 +63,7 @@ public class TransferService {
 
     public TransferResponseDto getTransferById(Integer id) {
         var transfer = transferRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transfer not found"));
+                .orElseThrow(() -> new TransferNotFoundException(id));
 
             return new TransferResponseDto(
                     transfer.getId(),

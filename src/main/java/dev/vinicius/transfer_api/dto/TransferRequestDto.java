@@ -13,6 +13,6 @@
             Integer destinationAccountTitularId,
 
             @NotNull(message = "Transfer value is required")
-            @Positive
+            @Positive(message = "Transfer value must be greater than zero")
             BigDecimal value) {
     }
