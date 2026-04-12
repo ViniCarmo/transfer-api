@@ -3,6 +3,7 @@ package dev.vinicius.transfer_api.service;
 import dev.vinicius.transfer_api.dto.AccountRequestDto;
 import dev.vinicius.transfer_api.dto.AccountResponseDto;
 import dev.vinicius.transfer_api.entities.Account;
+import dev.vinicius.transfer_api.exception.AccountNotFoundException;
 import dev.vinicius.transfer_api.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class AccountService {
 
     public AccountResponseDto getAccountById(Integer id){
         var account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException(id));
 
         return new AccountResponseDto(
                 account.getId(),
