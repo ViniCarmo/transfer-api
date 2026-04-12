@@ -46,7 +46,7 @@ public class TransferService {
         var destination = accountRepository.findById(transferRequestDto.destinationAccountTitularId())
                 .orElseThrow(() -> new RuntimeException("Destination account not found"));
 
-        verifyBalance(transferRequestDto.sourceAccountTitularId(), transferRequestDto.value());
+        verifyBalance(source.getId(), transferRequestDto.value());
 
         var value = transferRequestDto.value();
 
