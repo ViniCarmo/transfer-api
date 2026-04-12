@@ -24,10 +24,10 @@ public class Transfer {
     @Column(name = "value")
     private BigDecimal value;
 
-    @Column(name = "sourceAccount")
+    @Column(name = "source_account_id")
     private Integer sourceAccountId;
 
-    @Column(name = "destinationAccount")
+    @Column(name = "destination_account_id")
     private Integer destinationAccountId;
 
     @Column(name = "timestamp")
