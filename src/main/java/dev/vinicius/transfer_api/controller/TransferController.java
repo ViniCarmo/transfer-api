@@ -3,6 +3,7 @@ package dev.vinicius.transfer_api.controller;
 import dev.vinicius.transfer_api.dto.TransferRequestDto;
 import dev.vinicius.transfer_api.dto.TransferResponseDto;
 import dev.vinicius.transfer_api.service.TransferService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,13 @@ public class TransferController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createTransfer(@RequestBody TransferRequestDto transferRequestDto){
+    public ResponseEntity<Void> createTransfer(@Valid  @RequestBody TransferRequestDto transferRequestDto){
         transferService.createTransfer(transferRequestDto);
         return ResponseEntity.status(201).build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransferResponseDto> getTransferById(@PathVariable Integer id){
+    public ResponseEntity<TransferResponseDto> getTransferById(@Valid @PathVariable Integer id){
         return ResponseEntity.ok(transferService.getTransferById(id));
     }
 }

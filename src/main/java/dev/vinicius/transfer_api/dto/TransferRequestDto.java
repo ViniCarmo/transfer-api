@@ -1,8 +1,18 @@
-package dev.vinicius.transfer_api.dto;
+    package dev.vinicius.transfer_api.dto;
 
-import java.math.BigDecimal;
+    import jakarta.validation.constraints.NotNull;
+    import jakarta.validation.constraints.Positive;
 
-public record TransferRequestDto(Integer sourceAccountTitularId,
-                                 Integer destinationAccountTitularId,
-                                 BigDecimal value) {
-}
+    import java.math.BigDecimal;
+
+    public record TransferRequestDto(
+            @NotNull(message = "Source account titular ID is required")
+            Integer sourceAccountTitularId,
+
+            @NotNull(message = "Destination account titular ID is required")
+            Integer destinationAccountTitularId,
+
+            @NotNull(message = "Transfer value is required")
+            @Positive
+            BigDecimal value) {
+    }

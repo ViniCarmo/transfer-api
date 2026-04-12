@@ -31,17 +31,9 @@ public class TransferService {
         }
     }
 
-    public void verifyValue(BigDecimal value){
-        if (value.compareTo(BigDecimal.ZERO) <= 0){
-            throw new RuntimeException("Transfer value must be greater than zero");
-        }
-    }
-
 
     @Transactional
     public void createTransfer(TransferRequestDto transferRequestDto) {
-        verifyValue(transferRequestDto.value());
-
         var source = accountRepository.findById(transferRequestDto.sourceAccountTitularId())
                 .orElseThrow(() -> new RuntimeException("Source account not found"));
         var destination = accountRepository.findById(transferRequestDto.destinationAccountTitularId())

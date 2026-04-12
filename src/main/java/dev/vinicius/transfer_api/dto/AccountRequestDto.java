@@ -1,4 +1,8 @@
 package dev.vinicius.transfer_api.dto;
 
-public record AccountRequestDto(String titularName) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AccountRequestDto(
+        @NotBlank(message = "Titular name is required")
+        String titularName) {
 }
