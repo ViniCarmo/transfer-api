@@ -1,6 +1,7 @@
 package dev.vinicius.transfer_api.service;
 
 import dev.vinicius.transfer_api.dto.TransferRequestDto;
+import dev.vinicius.transfer_api.dto.TransferResponseDto;
 import dev.vinicius.transfer_api.entities.Transfer;
 import dev.vinicius.transfer_api.repository.AccountRepository;
 import dev.vinicius.transfer_api.repository.TransferRepository;
@@ -63,9 +64,19 @@ public class TransferService {
         );
 
         transferRepository.save(newTransfer);
+    }
 
+    public TransferResponseDto getTransferById(Integer id) {
+        var transfer = transferRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transfer not found"));
 
-
+            return new TransferResponseDto(
+                    transfer.getId(),
+                    transfer.getSourceAccountId(),
+                    transfer.getDestinationAccountId(),
+                    transfer.getValue(),
+                    transfer.getTimestamp()
+            );
     }
 
 }

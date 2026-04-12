@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransferResponseDto(Integer id,
-                                  String sourceAccountTitularName,
-                                  String destinationAccountTitularName,
+                                  Integer sourceAccountTitularName,
+                                  Integer destinationAccountTitularName,
                                   BigDecimal value,
                                   LocalDateTime timestamp) {
 }
