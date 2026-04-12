@@ -5,6 +5,7 @@ import dev.vinicius.transfer_api.dto.TransferResponseDto;
 import dev.vinicius.transfer_api.entities.Transfer;
 import dev.vinicius.transfer_api.exception.AccountNotFoundException;
 import dev.vinicius.transfer_api.exception.InsufficientBalanceException;
+import dev.vinicius.transfer_api.exception.SameAccountTransferException;
 import dev.vinicius.transfer_api.exception.TransferNotFoundException;
 import dev.vinicius.transfer_api.repository.AccountRepository;
 import dev.vinicius.transfer_api.repository.TransferRepository;
@@ -34,9 +35,16 @@ public class TransferService {
         }
     }
 
+    public void verifySameAccount(Integer sourceId, Integer destinationId) {
+        if(sourceId.equals(destinationId)){
+            throw new SameAccountTransferException();
+        }
+    }
+
 
     @Transactional
     public void createTransfer(TransferRequestDto transferRequestDto) {
+        verifySameAccount(transferRequestDto.sourceAccountTitularId(), transferRequestDto.destinationAccountTitularId());
         var source = accountRepository.findById(transferRequestDto.sourceAccountTitularId())
                 .orElseThrow(() -> new AccountNotFoundException(transferRequestDto.sourceAccountTitularId()));
         var destination = accountRepository.findById(transferRequestDto.destinationAccountTitularId())
