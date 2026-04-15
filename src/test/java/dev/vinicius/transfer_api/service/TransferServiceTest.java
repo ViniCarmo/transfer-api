@@ -3,6 +3,8 @@ package dev.vinicius.transfer_api.service;
 import dev.vinicius.transfer_api.dto.TransferRequestDto;
 import dev.vinicius.transfer_api.entities.Account;
 import dev.vinicius.transfer_api.entities.Transfer;
+import dev.vinicius.transfer_api.exception.AccountNotFoundException;
+import dev.vinicius.transfer_api.exception.InsufficientBalanceException;
 import dev.vinicius.transfer_api.exception.SameAccountTransferException;
 import dev.vinicius.transfer_api.repository.AccountRepository;
 import dev.vinicius.transfer_api.repository.TransferRepository;
@@ -57,6 +59,40 @@ class TransferServiceTest {
         TransferRequestDto transfer = new TransferRequestDto(1, 1, BigDecimal.valueOf(100));
 
         assertThrows(SameAccountTransferException.class,
+                () -> transferService.createTransfer(transfer));
+    }
+
+
+
+    @Test
+    void ShouldThrowExceptionInsufficientBalance(){
+        var accountSender = new Account(1, "Vinicius", BigDecimal.valueOf(500));
+        var accountDestinantion = new Account(2, "Carlos", BigDecimal.valueOf(500));
+        var transfer = new TransferRequestDto(accountSender.getId(), accountDestinantion.getId(), BigDecimal.valueOf(600));
+
+        when(accountRepository.findById(1)).thenReturn(Optional.of(accountSender));
+        when(accountRepository.findById(2)).thenReturn(Optional.of(accountDestinantion));
+
+        assertThrows(InsufficientBalanceException.class,
+        () -> transferService.createTransfer(transfer));
+
+    }
+    @Test
+    void shouldThrowExceptionWhenSourceAccountNotFound (){
+        var transfer = new TransferRequestDto(1, 2, BigDecimal.valueOf(300));
+
+        assertThrows(AccountNotFoundException.class,
+                () -> transferService.createTransfer(transfer));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDestinantionAccountNotFound (){
+        var accountSource = new Account(1, "Vinicius", BigDecimal.valueOf(540));
+        var transfer = new TransferRequestDto(1, 2, BigDecimal.valueOf(300));
+
+        when(accountRepository.findById(1)).thenReturn(Optional.of(accountSource));
+
+        assertThrows(AccountNotFoundException.class,
                 () -> transferService.createTransfer(transfer));
     }
     }
